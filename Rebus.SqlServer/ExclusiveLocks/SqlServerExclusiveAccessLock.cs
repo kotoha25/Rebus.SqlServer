@@ -228,7 +228,7 @@ public class SqlServerExclusiveAccessLock: IExclusiveAccessLock, IInitializable,
                     await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
                     await connection.Complete().ConfigureAwait(false);
                 }
-                catch (SqlException exception) when (exception.Number is 2601) // Cannot insert duplicate key row in object error
+                catch (SqlException exception) when (exception.Number is 2601 || exception.Number is 2627) // Cannot insert duplicate key row in object error
                 {
                     // Someone got there before us so bail and try again later
                     return false;

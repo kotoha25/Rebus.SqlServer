@@ -166,7 +166,7 @@ public class TestSagaInstanceLocking : FixtureBase
 
         public bool HasProcessedAllTheThings() => !ThingsToProcess.Any();
 
-        public void AddThings(IEnumerable<string> things)
+        public void AddThings(HashSet<string> things)
         {
             foreach (var thing in things)
             {

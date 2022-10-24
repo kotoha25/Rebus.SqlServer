@@ -264,6 +264,6 @@ select s.name as 'schema', t.name as 'table' from sys.tables t
     static string GetConnectionStringForDatabase(string databaseName)
     {
         return Environment.GetEnvironmentVariable("REBUS_SQLSERVER")
-               ?? $"server=.; database={databaseName}; trusted_connection=true; encrypt=false";
+               ?? $"server=LPCABIT05\\MSSQLSERVERDEV; database={databaseName}; trusted_connection=true; encrypt=false";
     }
 }
