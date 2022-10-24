@@ -150,7 +150,7 @@ public class SqlServerTransport : ITransport, IInitializable, IDisposable
 
     async Task InnerEnsureTableIsCreatedAsync(TableName tableName)
     {
-        using var connection = await ConnectionProvider.GetConnection();
+        using var connection = await ConnectionProvider.GetConnectionAsync();
         
         var tableNames = connection.GetTableNames();
 
@@ -265,7 +265,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = '{expirationIndexName}')
 
     async Task InnerEnsureTableIsDroppedAsync(TableName tableName)
     {
-        using var connection = await ConnectionProvider.GetConnection();
+        using var connection = await ConnectionProvider.GetConnectionAsync();
         
         var tableNames = connection.GetTableNames();
 
@@ -537,7 +537,7 @@ VALUES
 
         while (true)
         {
-            using var connection = await ConnectionProvider.GetConnection();
+            using var connection = await ConnectionProvider.GetConnectionAsync();
             
             int affectedRows;
 
@@ -591,7 +591,7 @@ DELETE FROM TopCTE
             .GetOrAdd(CurrentConnectionKey,
                 async () =>
                 {
-                    var dbConnection = await ConnectionProvider.GetConnection();
+                    var dbConnection = await ConnectionProvider.GetConnectionAsync();
                     context.OnCommitted(async _ => await dbConnection.Complete());
                     context.OnDisposed(_ =>
                     {

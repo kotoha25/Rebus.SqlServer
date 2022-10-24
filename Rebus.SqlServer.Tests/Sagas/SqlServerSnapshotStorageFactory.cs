@@ -39,7 +39,7 @@ public class SqlServerSnapshotStorageFactory : ISagaSnapshotStorageFactory
     {
         var storedCopies = new List<SagaDataSnapshot>();
 
-        using (var connection = await connectionProvider.GetConnection())
+        using (var connection = await connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {

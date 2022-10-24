@@ -67,7 +67,7 @@ public class SqlServerDataBusStorage : IDataBusStorage, IDataBusStorageManagemen
 
     async Task EnsureTableIsCreatedAsync()
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             if (connection.GetTableNames().Contains(_tableName))
             {
@@ -144,7 +144,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
 
         try
         {
-            using (var connection = await _connectionProvider.GetConnection())
+            using (var connection = await _connectionProvider.GetConnectionAsync())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -181,7 +181,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
 
             var objectsToDisposeOnException = new ConcurrentStack<IDisposable>();
 
-            var connection = await _connectionProvider.GetConnection();
+            var connection = await _connectionProvider.GetConnectionAsync();
 
             objectsToDisposeOnException.Push(connection);
 
@@ -237,7 +237,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
 
     async Task UpdateLastReadTime(string id)
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             await UpdateLastReadTime(id, connection).ConfigureAwait(false);
             await connection.Complete();
@@ -262,7 +262,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
     {
         try
         {
-            using (var connection = await _connectionProvider.GetConnection())
+            using (var connection = await _connectionProvider.GetConnectionAsync())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -312,7 +312,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
     {
         try
         {
-            using (var connection = await _connectionProvider.GetConnection())
+            using (var connection = await _connectionProvider.GetConnectionAsync())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -340,7 +340,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
 
         AsyncHelpers.RunSync(async () =>
         {
-            connection = await _connectionProvider.GetConnection();
+            connection = await _connectionProvider.GetConnectionAsync();
         });
 
         using (connection)

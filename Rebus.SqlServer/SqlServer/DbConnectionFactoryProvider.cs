@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
 #pragma warning disable 1998
 
@@ -20,5 +21,18 @@ public class DbConnectionFactoryProvider : IDbConnectionProvider
     /// <summary>
     /// Gets a nice ready-to-use database connection with an open transaction
     /// </summary>
-    public async Task<IDbConnection> GetConnection() => await _connectionFactory().ConfigureAwait(false);
+    public IDbConnection GetConnection()
+    {
+        IDbConnection connection = null;
+        AsyncHelpers.RunSync(async () =>
+        {
+            connection = await _connectionFactory().ConfigureAwait(false);
+        });
+        return connection;
+    }
+    
+    /// <summary>
+    /// Gets a wrapper with the current <see cref="SqlConnection"/> inside, async version
+    /// </summary>
+    public async Task<IDbConnection> GetConnectionAsync() => await _connectionFactory().ConfigureAwait(false);
 }

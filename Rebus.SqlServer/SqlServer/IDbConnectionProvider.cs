@@ -12,5 +12,10 @@ public interface IDbConnectionProvider
     /// <summary>
     /// Gets a wrapper with the current <see cref="SqlConnection"/> inside
     /// </summary>
-    Task<IDbConnection> GetConnection();
+    IDbConnection GetConnection();
+    
+    /// <summary>
+    /// Gets a wrapper with the current <see cref="SqlConnection"/> inside, async version
+    /// </summary>
+    Task<IDbConnection> GetConnectionAsync();
 }

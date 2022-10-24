@@ -57,9 +57,14 @@ public class TestNumberOfSqlConnections : FixtureBase
             _inner = new DbConnectionProvider(connectionString, new ConsoleLoggerFactory(true));
         }
 
-        public async Task<IDbConnection> GetConnection()
+        public IDbConnection GetConnection()
         {
-            return new Bimse(await _inner.GetConnection(), Interlocked.Increment(ref _counter), _activeConnections);
+            return new Bimse(_inner.GetConnection(), Interlocked.Increment(ref _counter), _activeConnections);
+        }
+
+        public async Task<IDbConnection> GetConnectionAsync()
+        {
+            return new Bimse(await _inner.GetConnectionAsync(), Interlocked.Increment(ref _counter), _activeConnections);
         }
 
         class Bimse : IDbConnection

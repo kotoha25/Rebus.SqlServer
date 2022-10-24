@@ -59,7 +59,7 @@ public class SqlServerSagaStorage : ISagaStorage, IInitializable
     {
         AsyncHelpers.RunSync(async () =>
         {
-            using (var connection = await _connectionProvider.GetConnection())
+            using (var connection = await _connectionProvider.GetConnectionAsync())
             {
                 var columns = connection.GetColumns(_dataTableName.Schema, _dataTableName.Name);
                 var datacolumn = columns.FirstOrDefault(c => string.Equals(c.Name, "data", StringComparison.OrdinalIgnoreCase));
@@ -83,7 +83,7 @@ public class SqlServerSagaStorage : ISagaStorage, IInitializable
 
     async Task EnsureTablesAreCreatedAsync()
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             var tableNames = connection.GetTableNames().ToList();
                 
@@ -208,7 +208,7 @@ ALTER TABLE {_indexTableName.QualifiedName} CHECK CONSTRAINT [FK_{_dataTableName
         if (propertyName == null) throw new ArgumentNullException(nameof(propertyName));
         if (propertyValue == null) throw new ArgumentNullException(nameof(propertyValue));
 
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {
@@ -272,7 +272,7 @@ WHERE [index].[saga_type] = @saga_type
             throw new InvalidOperationException($"Attempted to insert saga data with ID {sagaData.Id} and revision {sagaData.Revision}, but revision must be 0 on first insert!");
         }
 
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {
@@ -314,7 +314,7 @@ WHERE [index].[saga_type] = @saga_type
     /// </summary>
     public async Task Update(ISagaData sagaData, IEnumerable<ISagaCorrelationProperty> correlationProperties)
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             var revisionToUpdate = sagaData.Revision;
             sagaData.Revision++;
@@ -376,7 +376,7 @@ UPDATE {_dataTableName.QualifiedName}
     /// </summary>
     public async Task Delete(ISagaData sagaData)
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {

@@ -48,7 +48,7 @@ public class SqlServerSubscriptionStorage : ISubscriptionStorage, IInitializable
         {
             try
             {
-                using (var connection = await _connectionProvider.GetConnection())
+                using (var connection = await _connectionProvider.GetConnectionAsync())
                 {
                     _topicLength = GetColumnWidth("topic", connection);
                     _addressLength = GetColumnWidth("address", connection);
@@ -107,7 +107,7 @@ WHERE
 
     async Task EnsureTableIsCreatedAsync()
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             var tableNames = connection.GetTableNames();
 
@@ -149,7 +149,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
     /// </summary>
     public async Task<string[]> GetSubscriberAddresses(string topic)
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {
@@ -179,7 +179,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
     {
         CheckLengths(topic, subscriberAddress);
 
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {
@@ -220,7 +220,7 @@ END";
     {
         CheckLengths(topic, subscriberAddress);
 
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {

@@ -32,14 +32,14 @@ public class TestSqlServerTransportAutoDelete : FixtureBase
             .Transport(t => t.UseSqlServer(options, queueName).SetAutoDeleteQueue(true))
             .Start();
 
-        using (var connection = await connectionProvider.GetConnection())
+        using (var connection = await connectionProvider.GetConnectionAsync())
         {
             Assert.That(connection.GetTableNames().Contains(TableName.Parse(queueName)), Is.True);
         }
 
         CleanUpDisposables();
 
-        using (var connection = await connectionProvider.GetConnection())
+        using (var connection = await connectionProvider.GetConnectionAsync())
         {
             Assert.That(connection.GetTableNames().Contains(TableName.Parse(queueName)), Is.False);
         }

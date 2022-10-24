@@ -58,7 +58,35 @@ public class DbConnectionProvider : IDbConnectionProvider
     /// <summary>
     /// Gets a nice ready-to-use database connection with an open transaction
     /// </summary>
-    public async Task<IDbConnection> GetConnection()
+    public IDbConnection GetConnection()
+    {
+        SqlConnection connection = null;
+        SqlTransaction transaction = null;
+        try
+        {
+            if (_enlistInAmbientTransaction == false)
+            {
+                connection = CreateSqlConnectionSuppressingAPossibleAmbientTransaction();
+                transaction = connection.BeginTransaction(IsolationLevel);
+            }
+            else
+            {
+                connection = CreateSqlConnectionInAPossiblyAmbientTransaction();
+            }
+
+            return new DbConnectionWrapper(connection, transaction, false);
+        }
+        catch (Exception)
+        {
+            connection?.Dispose();
+            throw;
+        }
+    }
+    
+    /// <summary>
+    /// Gets a nice ready-to-use database connection with an open transaction
+    /// </summary>
+    public async Task<IDbConnection> GetConnectionAsync()
     {
         SqlConnection connection = null;
         SqlTransaction transaction = null;

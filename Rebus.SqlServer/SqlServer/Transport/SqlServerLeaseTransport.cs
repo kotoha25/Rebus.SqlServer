@@ -120,7 +120,7 @@ public class SqlServerLeaseTransport : SqlServerTransport
     {
         TransportMessage transportMessage;
 
-        using var connection = await ConnectionProvider.GetConnection();
+        using var connection = await ConnectionProvider.GetConnectionAsync();
 
         using (var selectCommand = connection.CreateCommand())
         {
@@ -299,7 +299,7 @@ END
     protected virtual async Task DeleteMessage(long messageId, CancellationToken cancellationToken)
     {
         // Delete the message
-        using var deleteConnection = await ConnectionProvider.GetConnection();
+        using var deleteConnection = await ConnectionProvider.GetConnectionAsync();
         
         using (var deleteCommand = deleteConnection.CreateCommand())
         {
@@ -328,7 +328,7 @@ WHERE	id = @id
 
                 async Task SendOutgoingMessages(ITransactionContext _)
                 {
-                    using var connection = await ConnectionProvider.GetConnection();
+                    using var connection = await ConnectionProvider.GetConnectionAsync();
                     
                     while (outgoingMessages.IsEmpty == false)
                     {
@@ -360,7 +360,7 @@ WHERE	id = @id
     /// <param name="cancellationToken">Token to abort processing</param>
     protected virtual async Task UpdateLease(IDbConnectionProvider connectionProvider, string tableName, long messageId, TimeSpan? leaseInterval, CancellationToken cancellationToken)
     {
-        using var connection = await connectionProvider.GetConnection();
+        using var connection = await connectionProvider.GetConnectionAsync();
         
         using (var command = connection.CreateCommand())
         {

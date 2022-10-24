@@ -55,7 +55,7 @@ public class SqlServerTimeoutManager : ITimeoutManager
 
     async Task EnsureTableIsCreatedAsync()
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             var tableNames = connection.GetTableNames();
 
@@ -115,7 +115,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_{_tableName.Schema}_{_
     {
         var headersString = HeaderSerializer.SerializeToString(headers);
 
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {
@@ -137,7 +137,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_{_tableName.Schema}_{_
     /// </summary>
     public async Task<DueMessagesResult> GetDueMessages()
     {
-        var connection = await _connectionProvider.GetConnection();
+        var connection = await _connectionProvider.GetConnectionAsync();
         try
         {
             var dueMessages = new List<DueMessage>();

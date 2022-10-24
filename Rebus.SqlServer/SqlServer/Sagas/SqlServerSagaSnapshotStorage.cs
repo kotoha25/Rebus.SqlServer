@@ -53,7 +53,7 @@ public class SqlServerSagaSnapshotStorage : ISagaSnapshotStorage
 
     async Task EnsureTableIsCreatedAsync()
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             var tableNames = connection.GetTableNames();
 
@@ -100,7 +100,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{_t
     /// </summary>
     public async Task Save(ISagaData sagaData, Dictionary<string, string> sagaAuditMetadata)
     {
-        using (var connection = await _connectionProvider.GetConnection())
+        using (var connection = await _connectionProvider.GetConnectionAsync())
         {
             using (var command = connection.CreateCommand())
             {

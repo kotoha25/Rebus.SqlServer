@@ -106,7 +106,7 @@ CREATE TABLE [dbo].[{_indexTableName}](
 
         Console.WriteLine($"Creating tables {_dataTableName} and {_indexTableName}");
 
-        using var connection = await _connectionProvider.GetConnection();
+        using var connection = await _connectionProvider.GetConnectionAsync();
         using (var command = connection.CreateCommand())
         {
             command.CommandText = createTableOldSchema;

@@ -14,7 +14,7 @@ public class TestDbConnectionProvider
     {
         var provizzle = new DbConnectionProvider(SqlTestHelper.ConnectionString, new ConsoleLoggerFactory(true));
 
-        using var dbConnection = await provizzle.GetConnection();
+        using var dbConnection = await provizzle.GetConnectionAsync();
         using var cmd = dbConnection.CreateCommand();
         cmd.CommandText = "insert into bimse (text) values ('hej med dig')";
                     
@@ -33,7 +33,7 @@ public class TestDbConnectionProvider
         var provizzle = new DbConnectionProvider(SqlTestHelper.ConnectionString, new ConsoleLoggerFactory(true),
             enlistInAmbientTransaction: true);
 
-        using var dbConnection = await provizzle.GetConnection();
+        using var dbConnection = await provizzle.GetConnectionAsync();
         using var cmd = dbConnection.CreateCommand();
         cmd.CommandText = "insert into bimse (text) values ('Nogen fjellaper liger 2PC')";
                     
