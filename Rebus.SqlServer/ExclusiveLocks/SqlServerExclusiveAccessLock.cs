@@ -222,7 +222,7 @@ public class SqlServerExclusiveAccessLock: IExclusiveAccessLock, IInitializable,
                         @expiration
                     )";
                 command.Parameters.Add("lock_key", SqlDbType.NVarChar, LockKeyColumnSize).Value = key;
-                command.Parameters.Add("expiration", SqlDbType.DateTime).Value = _rebusTime.Now.Add(_lockExpirationTimeout);
+                command.Parameters.Add("expiration", SqlDbType.DateTime).Value = _rebusTime.Now.Add(_lockExpirationTimeout).DateTime;
                 try
                 {
                     await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);

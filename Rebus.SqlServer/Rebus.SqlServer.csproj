@@ -19,6 +19,7 @@
 		<Description>Modification of official Regus.SqlServer that adds support for distributed exclusive saga locks via SQL Server tables</Description>
 		<PackageId>Kotoha25.$(AssemblyName)</PackageId>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageVersion>1.0.2</PackageVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="microsoft.data.sqlclient" Version="5.0.1" />
